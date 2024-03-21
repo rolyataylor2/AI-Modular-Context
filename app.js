@@ -50,8 +50,7 @@ app.post('/Chat/Completions', (req, res) => {
     if (req.body.api_key_save) {
       fs.writeFileSync(API_FILE, req.body.api_key, { encoding: 'utf-8' });
     }
-    const data = fs.readFileSync(API_FILE, { encoding: 'utf-8' });
-    API_KEY = data;
+    API_KEY = req.body.api_key || fs.readFileSync(API_FILE, { encoding: 'utf-8' });
   } catch (err) {
     console.log(err);
     API_KEY = req.body.api_key

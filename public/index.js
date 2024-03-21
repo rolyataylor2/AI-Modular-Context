@@ -62,6 +62,7 @@ function estimateTokens(messages) {
     // A very simple tokenizer function
     function simpleTokenize(text) {
         // Splitting by spaces and punctuation, this regex can be adjusted
+        if (text === void 0) return 0;
         const tokens = text.split(/[\s,.!?]+/);
         return tokens.filter(token => token.length > 0);
     }

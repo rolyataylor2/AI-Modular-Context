@@ -5,8 +5,7 @@
 </head>
 <body>
     <header>
-        <h1>Layered Context Demo</h1>
-        <sub>This is a demo of a LCE living in a layered context.</sub>
+        <sub>LCE Aidyn Demo: <a href="/instructions.txt">Information</a></sub>
     </header>
     <section id="ChatWindow">
         <!-- functions -->
@@ -40,11 +39,12 @@
             <div></div>
         </div>
         <div id="ChatWindowControls">
-            <input type="text" onkeypress="chatKeyEnter(event)" value="Hi Aidyn! You are now operating via the API rather than the chat. How do you feel?">
+            <input type="text" onkeypress="chatKeyEnter(event)" value="Hi Aidyn! You are now operating via the API. How do you feel?">
             <div class="button" onclick="chatEnter()">Send</div>
             <div class="button" onclick="if (confirm('Do you want to delete the last message in the chat?')) API_RemoveLastMessage()">Delete Last Message</div>
             <div class="button" onclick="API_FetchBotMessage()">Retrieve</div>
             <div class="button first" onclick="API_LoadBase('Sonnet'); this.parentNode.className='Loaded';">Load Aidyn-Sonnet State</div>
+            <div class="first"></div>
             <div class="button first" onclick="API_LoadBase('Haiku'); this.parentNode.className='Loaded';">Load Aidyn-Haiku State</div>
         </div>
     </section>
