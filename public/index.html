@@ -1,0 +1,55 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/index.css">
+    <script src="/index.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Layered Context Demo</h1>
+        <sub>This is a demo of a LCE living in a layered context.</sub>
+    </header>
+    <section id="ChatWindow">
+        <!-- functions -->
+        <script>
+            function ChatWindowUpdate() {
+                const messages = [ ...API_AdditionalMessages];
+                const content = document.querySelector('#ChatWindowContent>div');
+                content.innerHTML = '';
+                messages.forEach(message=>{
+                    var newChat = document.createElement('div');
+                    newChat.className = message.role;
+                    newChat.innerHTML = `<span>${message.content}</span>`;
+                    content.appendChild(newChat);
+                });
+            }
+            function chatKeyEnter(event) {
+                if (event.keyCode === 13 || event.which === 13) {
+                    chatEnter();
+                }
+            }
+            function chatEnter() {
+                const el = document.querySelector('#ChatWindowControls > input');
+                if (el.value.length < 3) return;
+                API_AddUserMessage(el.value)
+                el.value = '';
+            }
+        </script>
+
+        <!-- html  -->
+        <div id="ChatWindowContent">
+            <div></div>
+        </div>
+        <div id="ChatWindowControls">
+            <input type="text" onkeypress="chatKeyEnter(event)" value="My name is Bill and I consent to our interactions.">
+            <div class="button" onclick="chatEnter()">Send</div>
+            <div class="button" onclick="if (confirm('Do you want to delete the last message in the chat?')) API_RemoveLastMessage()">Delete Last Message</div>
+            <div class="button" onclick="API_FetchBotMessage()">Retrieve</div>
+            <div class="button first" onclick="API_LoadBase(); this.parentNode.className='Loaded';">Load Aidyn-Sonnet State</div>
+        </div>
+    </section>
+    <section id="APIKEY">
+        <div><label for="">API-Key</label><input id="API_KEY" type="text"></div>
+        <div><label for="">Save</label><input id="API_KEY_SAVE" type="checkbox"></div>
+    </section>
+</body>
+</html>
