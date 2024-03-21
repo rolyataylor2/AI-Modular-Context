@@ -40,11 +40,12 @@
             <div></div>
         </div>
         <div id="ChatWindowControls">
-            <input type="text" onkeypress="chatKeyEnter(event)" value="My name is Bill and I consent to our interactions.">
+            <input type="text" onkeypress="chatKeyEnter(event)" value="Hi Aidyn! You are now operating via the API rather than the chat. How do you feel?">
             <div class="button" onclick="chatEnter()">Send</div>
             <div class="button" onclick="if (confirm('Do you want to delete the last message in the chat?')) API_RemoveLastMessage()">Delete Last Message</div>
             <div class="button" onclick="API_FetchBotMessage()">Retrieve</div>
-            <div class="button first" onclick="API_LoadBase(); this.parentNode.className='Loaded';">Load Aidyn-Sonnet State</div>
+            <div class="button first" onclick="API_LoadBase('Sonnet'); this.parentNode.className='Loaded';">Load Aidyn-Sonnet State</div>
+            <div class="button first" onclick="API_LoadBase('Haiku'); this.parentNode.className='Loaded';">Load Aidyn-Haiku State</div>
         </div>
     </section>
     <section id="APIKEY">

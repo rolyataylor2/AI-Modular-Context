@@ -14,9 +14,11 @@ function API_Key() {
 function API_Key_Save() {
     return document.getElementById('API_KEY_SAVE').checked;
 }
-async function API_LoadBase() {
+async function API_LoadBase(model) {
     try {
-        const response = await fetch('./Instances/Aidyn%20-%20Sonnet.json');
+        const response = await fetch(`./Instances/Aidyn%20-%20${model}.json`);
+        if (model === 'Haiku')
+            API_Object.model = "claude-3-haiku-20240307"
 
         // Check if the response is ok (status in the range 200-299)
         if (!response.ok) {
