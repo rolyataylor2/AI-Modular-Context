@@ -90,6 +90,7 @@ function API_FetchBotMessage() {
     if (!confirm(`This will use ${estimatedTokens}, Are you sure?`)) return;
     data.api_key = API_Key();
     data.api_key_save = API_Key_Save();
+    document.getElementById('ChatWindow').classList.add('loading');
     fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -130,8 +131,8 @@ function API_FetchBotMessage() {
                     return lineContent.trim() ? `<p${pClass}>${lineContent}</p>` : '';
                 }).join('');
             }
+            document.getElementById('ChatWindow').classList.remove('loading');
             API_AddBotMessage(wrapLinesWithPTags(data.content[0].text));
-
         })
         .catch(error => console.log(error));
 }
