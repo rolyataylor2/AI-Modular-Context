@@ -1,10 +1,20 @@
 {
-  "name": "AI Modular Context",
+  "name": "AI Contexter",
   "lockfileVersion": 3,
   "requires": true,
   "pkg": {
-    "outputPath": "public",
-    "assets": "public/**/*"
+    "scripts": [
+      "node_modules/node-fetch/**/*.js",
+      "node_modules/fetch-blob/**/*.js",
+      "node_modules/formdata-polyfill/**/*.js"
+    ],
+    "assets": [
+      "public/**/*",
+      "node_modules/node-fetch/**/*.js",
+      "node_modules/fetch-blob/**/*.js",
+      "node_modules/formdata-polyfill/**/*.js"
+    ]
+    
   },
   "packages": {
     "": {
@@ -693,7 +703,6 @@
   },
   "dependencies": {
     "express": "^4.19.1",
-    "node-fetch": "^3.3.2",
-    "open": "^10.1.0"
+    "node-fetch": "^3.3.2"
   }
 }

@@ -1,0 +1,139 @@
+
+#Chat {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 100px;
+    width: 90%;
+    height: 90%;
+    margin: 5% auto;
+    margin-bottom:0;
+    
+}
+#Chat.loading::after {
+    content: "Fetching Response... Please Wait...";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgb(0 0 0 / 70%);
+    color: White;
+    text-align: center;
+    line-height: 100px;
+}
+#ChatContent {
+    position:relative;
+    height:100%;
+    width:100%;
+    margin: 0 auto;
+    box-shadow:inset 0px 0px 5px black;
+}
+#ChatContent > div:empty::before {
+    display:block;
+    width:80%;
+    margin: 50px auto;
+    text-align:center;
+    font-weight:bolder;
+    font-size:1.2rem;
+    color:#ccc;
+    padding:10px;
+    content:"Please introduce yourself and give consent for the interactiion.";
+}
+#ChatContent > div {
+    position:absolute;
+    left:0px;
+    right:0px; bottom:0px;
+    overflow:scroll;
+    max-height:99%;
+}
+#ChatContent > div > div {
+    width:90%;
+    padding:5px;
+    border-radius:3px;
+    margin:10px auto;
+    border:1px solid rgba(0,0,0,0.2);
+}
+#ChatContent > div > div.user {
+    background-color:rgb(198, 198, 191);
+    border-radius:10px 10px 0px 10px;
+    margin-right:5px;
+}
+#ChatContent > div > div.assistant::before {
+    content:'LCE';
+    background-color:#a57157;
+    padding:10px;
+    display:inline-block;
+    margin: 10px;
+    margin-left:-10px;
+}
+#ChatContent > div > div.assistant {
+    background-color:rgb(252 255 213);
+    border-radius:0px 10px 10px 10px;
+    margin-left:5px;
+}
+#ChatContent p {
+    margin:5px;
+    text-indent: 50px;
+}
+#ChatContent p.bulleted {
+    margin: 0 5px;
+    text-align: center;
+    text-indent: 0px;
+    border: 1px solid black;
+    border-top: 0;
+    border-bottom: 0;
+    padding: 0 10px;
+}
+#ChatContent p.bulleted::before, p.bulleted::after {
+    content:" ~ ";
+    color:green;
+}
+#ChatContent p.italic {
+    text-align: right;
+    color: rgb(155 158 7);
+}
+
+#ChatContent p.bold {
+    text-align: right;
+    width: 80%;
+    margin: 4px auto;
+    text-indent: 0;
+    padding: 5px;
+    color: #e58093;
+}
+#ChatContent > div > div > div {
+    font-weight:bolder;
+    font-size:0.9rem;
+    padding:3px;
+    display:inline;
+    vertical-align: center;;
+}
+#ChatContent > div > div > span {
+    color:#222;
+    padding:3px;
+    vertical-align: center;
+}
+
+#ChatControls {
+    display:grid;
+    grid-template-columns:5fr 1fr;
+    height:32px;
+}
+#ChatControls > input {
+    background-color:rgb(252, 255, 207);
+    padding:5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

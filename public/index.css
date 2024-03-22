@@ -10,181 +10,144 @@ textarea {
     padding: 5px;
     resize: none;
 }
+textarea {
+    min-height: 80px;
+}
 html {
     background-color:black;
 }
+a { text-decoration:none; color:lightblue; padding:4px; }
 body {
-    display: grid;
+    position: fixed;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    left: 5px;
     margin: 5px auto;
     padding: 0px;
-    width: 800px;
-    background-color: #AAA;
+    background: url(/img/background.webp);
+    background-size: cover;
+    background-position: center; 
     border-radius: 1rem;
-    grid-template-rows: auto 1fr auto;
-}
-header {
-    width:90%;
-    margin:10px auto;
-}
-
-.inset {
-    border: 5px solid #333;
-    border-radius:10px;
-    padding: 5px;
-    background-color: #ddd;
-}
-
-.outset {
-    border: 5px outset #333;
-    padding: 5px;
-    background-color: #AAA;
-}
-
-
-
-#ChatWindow {
-    position:relative;
-    display:grid;
-    grid-template-columns: 1fr;
-    grid-template-rows:auto 100px;
-    width:90%;
-    margin:1% auto;
-}
-section#ChatWindow.loading::after {
-    content: "Fetching Response From Aidyn... Please Wait...";
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: rgb(0 0 0 / 70%);
-    color: White;
-    text-align: center;
-    line-height: 100px;
-}
-#ChatWindowContent {
-    position:relative;
-    height:100%;
-    width:100%;
-    margin: 0 auto;
-    
-    background-color:white;
-    box-shadow:inset 2px 2px 2px black;
-}
-#ChatWindowContent > div:empty::before {
-    display:block;
-    width:100%;
-    margin: 50px auto;
-    text-align:center;
-    font-weight:bolder;
-    font-size:1.2rem;
-    color:#333;
-    content:"Please introduce yourself and give consent for the interactiion.";
-}
-#ChatWindowContent > div {
-    position:absolute;
-    left:0px;
-    right:0px; bottom:0px;
     overflow:scroll;
-    max-height:99%;
-}
-#ChatWindowContent > div > div {
-    width:90%;
-    padding:5px;
-    border-radius:3px;
-    margin:10px auto;
-    background-color:paleturquoise;
-    border:1px solid rgba(0,0,0,0.2);
-}
-#ChatWindowContent > div > div.user {
-    background-color:rgb(198, 198, 191);
-    border-radius:10px 10px 0px 10px;
-    margin-right:5px;
-}
-#ChatWindowContent > div > div.assistant::before {
-    content:'LCE';
-    background-color:#a57157;
-    padding:10px;
-    display:inline-block;
-    margin: 10px;
-    margin-left:-10px;
-}
-#ChatWindowContent > div > div.assistant {
-    background-color:rgb(252 255 213);
-    border-radius:0px 10px 10px 10px;
-    margin-left:5px;
-}
-p {
-    margin:5px;
-    text-indent: 50px;
-}
-p.bulleted {
-    margin: 0 5px;
-    text-align: center;
-    text-indent: 0px;
-    border: 1px solid black;
-    border-top: 0;
-    border-bottom: 0;
-    padding: 0 10px;
-}
-p.bulleted::before, p.bulleted::after {
-    content:" ~ ";
-    color:green;
-}
-p.italic {
-    text-align: right;
-    color: rgb(155 158 7);
 }
 
-p.bold {
-    text-align: right;
-    width: 80%;
-    margin: 4px auto;
-    text-indent: 0;
-    padding: 5px;
-    color: #e58093;
+header {
+    position:absolute;
+    top:0px; left:0px;
+    font-size:0.7rem;
+    background-color:black;
+    color:white;
+    padding: 5px 10px;
+    border-radius: 0 10px 10px 0;
+    z-index:10;
+    display: flex;
+    justify-content: space-around; /* This will evenly space the children */
+    align-items: center; 
 }
-#ChatWindowContent > div > div > div {
-    font-weight:bolder;
-    font-size:0.9rem;
-    padding:3px;
+header > b {
+    width:100px;
+}
+header input {
     display:inline;
-    vertical-align: center;;
-}
-#ChatWindowContent > div > div > span {
-    color:#222;
-    padding:3px;
-    vertical-align: center;
+    background-color:#222;
+    padding:4px;
+    color:white;
 }
 
-#ChatWindowControls {
-    display:grid;
-    grid-template-columns:5fr 1fr;
+nav {
+    position:absolute;
+    bottom:32px; left:0px;
+    right:0px;
+    background-color:black;
     height:32px;
-}
-#ChatWindowControls > input {
-    background-color:rgb(252, 255, 207);
-    padding:5px;
+    display:flex;
+    justify-content: space-around;
+    align-items: start;
 }
 
-#ChatWindowControls > :not(.first) {
-    display:none;
+nav > div {
+    color:#999;
+    text-transform:uppercase;
+    font-weight:bolder;
+    cursor:grab;
+    flex-grow: 1; 
+    flex-basis: 0; 
+    text-align:center;
+    line-height:32px;
 }
-#ChatWindowControls.loaded > :not(.first) {
-    display:block;
+nav > div:active {
+    background-color:orange;
 }
-#ChatWindowControls.loaded > .first {
-    display:none;
+nav > div.selected {
+    color:white;
 }
-#ChatWindowControls.loaded::after {
-    content:"* Entity has been loaded."
+
+footer {
+    position:absolute;
+    bottom:0px;
+    left:0px; right:0px;
+    height:32px;
+    margin:0;
+    display:grid;
+    grid-template-columns:4fr 1fr 1fr;
+
+    background-color:black;
+    color:white;
+    z-index:10;
 }
+footer > div > select {
+    width:100%;
+    height:100%;
+}
+footer > div {
+    display:grid;
+    grid-template-columns:1fr 3fr;
+    width:100%;
+    height:24px;
+    margin:0px auto;
+    padding:10px;
+
+}
+footer > div > label {
+    font-weight:bolder; font-size:0.7rem;
+    padding:10px;
+    text-align:right;
+
+}
+
+main {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 900px;
+    margin-left: -450px;
+    bottom: 60px;
+    overflow: scroll;
+    z-index: -1;
+}
+main>section {
+    position: relative;
+    width:80%;
+    min-height:80%;
+    padding: 10px;
+    background-color: #333;
+    border-radius:10px;
+}
+main>section:not(.open) {
+    display:none !important;
+}
+
+
+
+
+
 
 /* each block in the context */
 .button {
     display: inline-block;
-    background: #ef9d74;
-    text-align: center;
+    background-color:rgb(103, 117, 210);
+    text-align:center;
     font-weight: bolder;
     margin: 3px 5px;
     padding: 0 5px;
@@ -197,7 +160,7 @@ p.bold {
 .button:hover {
     font-weight: bolder;
     text-decoration: underline;
-    background: #ecab8b;
+    background: #8ba5ec;
     border: 1px solid rgba(255,255,255,0.5);
 }
 .button:active {
@@ -208,27 +171,12 @@ p.bold {
 
 
 
-#APIKEY {
-    display:grid;
-    grid-template-columns:3fr 1fr;
-    width:90%;
-    margin:0 auto;
-    border-radius:10px 10px  0 0;
-    background-color:black;
-    color:white;
-}
-#APIKEY > div {
-    display:grid;
-    grid-template-columns:1fr 3fr;
-    width:100%;
-    height:24px;
-    margin:0px auto;
-    padding:10px;
 
-}
-#APIKEY > div > label {
-    font-weight:bolder; font-size:0.7rem;
-    padding:10px;
-    text-align:right;
 
-}
+
+
+
+
+
+
+

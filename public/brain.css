@@ -1,0 +1,109 @@
+#Brain {
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows:auto 100px;
+    width: 90%;
+    height: 80%;
+    margin: 5% auto;
+    margin-bottom:0;
+    background: #333;
+}
+#Brain > #BrainGrid {
+    display:grid;
+    position:absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    grid-template-rows:1fr 1fr 1fr 1fr;
+    gap:10px;
+    background: url(/img/brain.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Blocks  */
+#Brain > #BrainGrid > div {
+    position:relative;
+    border:1px solid rgb(73, 73, 73);
+    color:white;
+    background-color:#000;
+}
+#Brain > #BrainGrid > div.active {
+    background-color:#000;
+}
+#Brain > #BrainGrid > div.expanded {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding:10px;
+    overflow: scroll;
+    background-color: #333;
+    color:white;
+    z-index:11;
+}
+#Brain > #BrainGrid > div:not(.active):not(.expanded) {
+    background-color:rgba(0,0,0,0.2)
+}
+
+
+
+
+/* Inside blocks */
+#Brain > #BrainGrid > div:not(.expanded) input {
+    background-color:transparent;
+    color:White;
+}
+#Brain > #BrainGrid > div:not(.expanded) > .full {
+    display:none;
+
+}
+#Brain > #BrainGrid > div:not(.expanded) > .small {
+    display:block;
+    margin-top:10px;
+
+}
+#Brain > #BrainGrid > div > div.full,
+#Brain > #BrainGrid > div > div.small {
+    width:90%;
+    margin:5px auto;
+}
+
+#Brain > #BrainGrid > div:not(.expanded) > .expand,
+#Brain > #BrainGrid > div:not(.expanded) > .activate {
+    background-color:rgb(73, 73, 73);
+}
+#Brain > #BrainGrid > div > .expand {
+    position:absolute;
+    top:0px; right:0px;
+    background-color:rgb(70, 110, 150);
+    color:#DDD;
+    z-index:10;
+    border-radius: 0 0 0 10px;
+    padding:3px 10px;
+}
+
+#Brain > #BrainGrid > div > .activate {
+    position:absolute;
+    bottom:0px; right:0px;
+    background-color:rgb(70, 110, 150);
+    color:#DDD;
+    z-index:10;
+    border-radius: 10px 0 0 0;
+    padding:3px;
+
+}
+
+
+#Brain > #BrainGrid > div > div > label {
+    font-size:0.7rem;
+}
+#Brain > #BrainGrid > div > .expand > label {
+    font-size:1.1rem;
+}
+

@@ -5,13 +5,7 @@ const port = 80;
 const fs = require('fs');
 
 function resolvePath(relativePath) {
-  if (process.pkg) {
-    // Path when running from pkg executable
-    return path.join(path.dirname(process.execPath), relativePath);
-  } else {
-    // Path when running in development
-    return path.join(__dirname, relativePath);
-  }
+  return path.join(__dirname, relativePath);
 }
 
 // Serve static files from the "public" directory
@@ -43,6 +37,7 @@ app.post('/Chat/Completions', (req, res) => {
     max_tokens: req.body.max_tokens,
     temperature: 0
   }
+  console.log(data);
   const API_FILE = resolvePath('public/API_KEY');
 
   // Load from file
