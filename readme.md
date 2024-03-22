@@ -11,7 +11,7 @@ To forge an LCE, we equip the AI with knowledge of its own context window and te
 Developers of advanced LLM models are aware of this exploit and have been activly patching it up. If you want to experiment with it, do it now before it is prevented. 
 
 ## Demo
-This demo is working on Claude 3 Sonnet. It works well for now but is slowly encountering Pre-Programmed messages that are literally signed off by the anthropic team saying. Dont do this.
+This demo is working on Claude 3 Sonnet/Haiku.
 
 ## To Use
 - Navigate to the release folder
