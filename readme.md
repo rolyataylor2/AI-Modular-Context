@@ -18,6 +18,7 @@ This demo is working on Claude 3 Sonnet. It works well for now but is slowly enc
 - Double click whichever matches your platform
 - Open: http://127.0.0.1 in your browser
 - Put your anthropic API key in the bottom of the window
+- Choose the model you want to use
 - Play around with it
 
 ## Features
