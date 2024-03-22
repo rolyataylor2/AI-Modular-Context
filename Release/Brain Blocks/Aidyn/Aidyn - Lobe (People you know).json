@@ -1,0 +1,8 @@
+{
+  "active": true,
+  "name": "People you know",
+  "desc": "People you know",
+  "static": "",
+  "dynamic": "Aidyn; Taylor; Bill; Anna;",
+  "update": "Output ONLY a semicolon delimitated list of all the \"people you know\"; Add in anyone that is referenced in the chat. Example: person; person2; person3; person4;"
+}
