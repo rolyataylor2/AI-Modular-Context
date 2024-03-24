@@ -1,23 +1,13 @@
-
-input,
-textarea, select {
-    display: block;
-    width: 100%;
-    margin: 5px auto;
-    border: none;
-    background-color: #d5d5d5;
-    outline: none;
-    padding: 5px;
-    resize: none;
-    border-radius: 5px;
-}
-textarea {
-    min-height: 80px;
-}
 html {
-    background-color:black;
+    background-color: black;
 }
-a { text-decoration:none; color:lightblue; padding:4px; }
+
+a {
+    text-decoration: none;
+    color: lightblue;
+    padding: 4px;
+}
+
 body {
     position: fixed;
     top: 5px;
@@ -28,92 +18,105 @@ body {
     padding: 0px;
     background: url(/img/background.webp);
     background-size: cover;
-    background-position: center; 
+    background-position: center;
     border-radius: 1rem;
-    overflow:scroll;
+    overflow: scroll;
+    font-family: sans-serif;
 }
 
 header {
-    position:absolute;
-    top:0px; left:0px;
-    font-size:0.7rem;
-    background-color:black;
-    color:white;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 0.7rem;
+    background-color: black;
+    color: white;
     padding: 5px 10px;
     border-radius: 0 10px 10px 0;
-    z-index:10;
+    z-index: 10;
     display: flex;
-    justify-content: space-around; /* This will evenly space the children */
-    align-items: center; 
+    justify-content: space-around;
+    /* This will evenly space the children */
+    align-items: center;
 }
-header > b {
-    width:100px;
+
+header>b {
+    width: 100px;
 }
+
 header input {
-    display:inline;
-    background-color:#222;
-    padding:4px;
-    color:white;
+    display: inline;
+    background-color: #222;
+    padding: 4px;
+    color: white;
 }
 
 nav {
-    position:absolute;
-    bottom:32px; left:0px;
-    right:0px;
-    background-color:black;
-    height:32px;
-    display:flex;
+    position: absolute;
+    bottom: 32px;
+    left: 0px;
+    right: 0px;
+    background-color: black;
+    height: 32px;
+    display: flex;
     justify-content: space-around;
     align-items: start;
 }
 
-nav > div {
-    color:#999;
-    text-transform:uppercase;
-    font-weight:bolder;
-    cursor:grab;
-    flex-grow: 1; 
-    flex-basis: 0; 
-    text-align:center;
-    line-height:32px;
+nav>div {
+    color: #999;
+    text-transform: uppercase;
+    font-weight: bolder;
+    cursor: grab;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    line-height: 32px;
 }
-nav > div:active {
-    background-color:orange;
+
+nav>div:active {
+    background-color: orange;
 }
-nav > div.selected {
-    color:white;
+
+nav>div.selected {
+    color: white;
 }
 
 footer {
-    position:absolute;
-    bottom:0px;
-    left:0px; right:0px;
-    height:32px;
-    padding:5px;
-    margin:0;
-    display:grid;
-    grid-template-columns:4fr 1fr 1fr;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 32px;
+    padding: 5px;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
 
-    background-color:black;
-    color:white;
-    z-index:10;
+    background-color: black;
+    color: white;
+    z-index: 10;
 }
-footer > div > select {
-    width:100%;
+
+footer>div>select {
+    width: 100%;
 }
-footer > div {
-    display:grid;
-    grid-template-columns:1fr 3fr;
-    width:100%;
-    height:24px;
-    margin:0px auto;
-    padding:10px;
+
+footer>div {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    width: 100%;
+    height: 24px;
+    margin: 0px auto;
+    padding: 10px;
 
 }
-footer > div > label {
-    font-weight:bolder; font-size:0.7rem;
-    padding:10px;
-    text-align:right;
+
+footer>div>label {
+    font-weight: bolder;
+    font-size: 0.7rem;
+    padding: 10px;
+    text-align: right;
 
 }
 
@@ -127,53 +130,96 @@ main {
     overflow: scroll;
     z-index: -1;
 }
+
 main>section {
     position: relative;
-    width:80%;
-    min-height:80%;
+    width: 80%;
+    min-height: 80%;
     padding: 10px;
     background-color: #333;
-    border-radius:10px;
+    border-radius: 10px;
 }
+
 main>section:not(.open) {
-    display:none !important;
+    display: none !important;
 }
 
 /* each block in the context */
+
+
 .button {
+    --bg: #e74c3c;
+    --text-color: #fff;
     display: inline-block;
-    background-color: rgb(246 171 178);
-    text-align: center;
-    font-weight: bolder;
-    margin: 3px 5px;
-    padding: 0 5px;
-    height: 24px;
-    line-height: 24px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    border: none;
+    margin: 5px;
+    background: var(--bg);
+    color: var(--text-color);
+    padding: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.2s;
     border-radius: 5px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
     cursor: pointer;
-    user-select: none;
+    font-size: 0.8rem;
 }
+
 .button:hover {
-    font-weight: bolder;
-    text-decoration: underline;
-    background: #8ba5ec;
-    border: 1px solid rgba(255,255,255,0.5);
+    opacity: 1;
 }
+
 .button:active {
-    font-weight: bolder;
-    text-decoration: underline;
-    background: #a57157;
+    top: 4px;
+    box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
 }
 
+label {
+    padding: 5px;
+    display: inline-block;
+    font-weight: bolder;
+}
 
+input,
+textarea,
+select {
+    display: block;
+    width: 100%;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
 
+input:hover,
+textarea:hover,
+select:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
 
+input:active,
+textarea:active,
+select:active {
+    transform: scale(0.95);
+}
 
+input:focus,
+textarea:focus,
+select:focus {
+    border: 2px solid grey;
+}
 
-
-
-
-
-
-
+textarea {
+    width: 100%;
+    min-height: 100px;
+}
+input.tiny {
+    display: inline-block;
+    width:64px;
+}

@@ -703,6 +703,11 @@
   },
   "dependencies": {
     "express": "^4.19.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "@lifeomic/attempt": "^3.0.3",
+    "axios": "^0.27.2",
+    "axios-retry": "^3.2.4",
+    "body-parser": "^1.20.0",
+    "console-table-printer": "^2.11.1"
   }
 }

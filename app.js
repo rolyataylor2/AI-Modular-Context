@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const port = 80;
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 function resolvePath(relativePath) {
   return path.join(__dirname, relativePath);
@@ -17,6 +18,22 @@ app.get('/', (req, res) => {
   res.sendFile(resolvePath('public/index.html'));
 });
 
+
+// Generate Ideal Prompt
+const { generateOptimalPrompt } = require('./generateOptimalPrompt');
+app.post('/generate-prompt', async (req, res) => {
+  const { apiKey, description, inputVariables, numTestCases, numberOfPrompts } = req.body;
+  console.log('Looking for ideal prompt...')
+  console.log(JSON.stringify(req.body))
+  try {
+    var results = await generateOptimalPrompt(apiKey, description, inputVariables, numTestCases, numberOfPrompts);
+
+    res.status(200).json({ table: results });
+  } catch (error) {
+    console.error('Error generating optimal prompt:', error);
+    res.status(500).json({ error: 'An error occurred while generating the optimal prompt' });
+  }
+});
 // Serve completions.js at /Chat/Completions
 
 function GenerateErrorCompletion(error) {

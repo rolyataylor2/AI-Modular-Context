@@ -92,5 +92,8 @@ function API_FetchMessage() {
             document.getElementById('Chat').classList.remove('loading');
             return data.content[0].text;
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+            document.getElementById('Chat').classList.remove('loading');
+            console.log(error);
+        });
 }

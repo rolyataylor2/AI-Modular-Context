@@ -83,16 +83,105 @@ function loadBlock(blockElement) {
     };
 }
 
-
+function ChatCompile() {
+    var compiledChat = '<chatlog>You:Hello\n';
+    API_AdditionalMessages.forEach(entry=>{
+        if (entry.role === 'assistant') compiledChat += `You:${entry.content}\n`;
+        else compiledChat += `Them:${entry.content}\n`;
+    })
+    compiledChat += '</chatlog>';
+    return compiledChat;
+}
 function updateBlock(blockElement) {
-    var dynamicContext = blockElement.querySelector('textarea[name="dynamic"]');
-    var updateScript = blockElement.querySelector('textarea[name="update"]');
+    var activeElement = blockElement.querySelector('input[name="active"]');
+    if (activeElement.checked == false ) return alert('This block is not active.');
 
-    API_AddUserMessage(updateScript.value);
-    var fetching = API_FetchMessage();
-    API_RemoveLastMessage();
-    fetching.then(updatedContext=>{
-        dynamicContext.value = updatedContext;
+    var updateScriptElement = blockElement.querySelector('textarea[name="update"]');
+    var dynamicContextElement = blockElement.querySelector('textarea[name="dynamic"]');
+    var updateScript = updateScriptElement.value;
+    updateScript = updateScript.replace('{{{{brain}}}}', ContextCompileBrain());
+    updateScript = updateScript.replace('{{{{chatlog}}}}', ChatCompile());
+
+
+
+    // Compile The API Object
+    var data = { ...API_Object };
+    data.messages = [{
+        'role':'user',
+        'content':updateScript
+    }];
+    data.system = ' ';
+    data.api_key = API_Key();
+    data.api_key_save = API_Key_Save();
+
+    // Approved
+    document.getElementById('Brain').classList.add('loading');
+    return fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('Brain').classList.remove('loading');
+            dynamicContextElement.value = data.content[0].text;
+            return data.content[0].text;
+        })
+        .catch(error => {
+            document.getElementById('Brain').classList.remove('loading');
+            console.log(error);
+        });
+}
+async function refineBlock(blockElement) {
+    // Confirm
+    if (!confirm("This will take a few minutes and will use a lot of tokens both in Opus and Haiku. Are you sure?") ) return;
+
+    // Define Post Data
+    var blockName = blockElement.querySelector('input[name="name"]').value;
+    var blockDescription = blockElement.querySelector('input[name="description"]').value;
+    var blockTestCases = blockElement.querySelector('input[name="refine-test"]').value;
+    var blockTestPrompts = blockElement.querySelector('input[name="refine-prompts"]').value;
+    var blockTestReplace = blockElement.querySelector('input[name="refine-replace"]').checked;
+    var data =  {
+        apiKey: API_Key(),
+        
+        description: `Given just the chatlog ( between you and them ) and XML representing a snapshot of your brain, `
+        + `Give me the updated content of ONLY this XML tag: <lobe name='${blockName}' description='${blockDescription}'><dynamic>[updated content]</dynamic></lobe>; `
+        + `Use the 'name' and 'description' attributes to figure out what content needs to be inside of the tag; `
+        + ( blockTestReplace ? `Discard the old content of the tag; `:`Be sure to preserve and update what is already in the tag; `)
+        + `ONLY output the updated content of the <dynamic></dynamic> tag within the given tag, nothing else;`,
+        inputVariables: [
+            {
+              "variable": "chatlog",
+              "description": "The current chat you and them are participating in."
+            },
+            {
+              "variable": "brain",
+              "description": "XML tag of your brain, the brain contains various lobe tags. <brain><lobe><dynamic></dynamic></lobe></brain>"
+            }
+        ],
+        numTestCases: parseInt(blockTestCases),
+        numberOfPrompts: parseInt(blockTestPrompts)
+    };
+    console.log(data)
+
+    document.getElementById('Brain').classList.add('loading');
+    // Send
+    fetch('/generate-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(response => response.json())
+    .then(result => {
+        document.getElementById('Brain').classList.remove('loading');
+        var updateScript = blockElement.querySelector('textarea[name="update"]');
+        updateScript.value = result.table;
+    }).catch(error=>{
+        document.getElementById('Brain').classList.remove('loading');
     });
 }
 
@@ -111,27 +200,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 <label for="">Name</label>
                 <input name="name" type="text" placeholder="Name">
             </div>
-            
             <div class="full">
-                <label for="">Description</label>
-                <input name="desc" type="text" placeholder="What is this?">
+                <label for="">Description ( Opus uses Name/Description to write the update, refer to the bot as "you" )</label>
+                <input name="description" type="text" placeholder="What is this?">
             </div>
             <div class="full">
-                <label for="">Static Context</label>
-                <textarea name="static"></textarea>
+                <div class="button" onclick="refineBlock(this.parentElement.parentElement)">Generate Script</div>
+                <label>
+                    Options:
+                    Test Cases: <input class="tiny" type="text" name="refine-test" value="3"/>
+                    Test Prompts: <input class="tiny" type="text" name="refine-prompts" value="2"/>
+                    Replace Content: <input class="tiny" type="checkbox" name="refine-replace"/>
+                </label><br/>
+                <label for="">Update Script ( Be sure to include: {{{{brain}}}} and {{{{chatlog}}}} )</label>
+                
+                <textarea name="update"></textarea>
+            </div>
+            <div class="full">
+                <div class="button" onclick="updateBlock(this.parentElement.parentElement)">vv</div>
+                <label>Use Haiku + Update Script to update the Dynamic Context</label>
             </div>
             <div class="full">
                 <label for="">Dynamic Context</label>
                 <textarea name="dynamic"></textarea>
             </div>
+
             <div class="full">
-                <label for="">Update Context</label>
-                <textarea name="update"></textarea>
+                <label for="">Static Context</label>
+                <textarea name="static"></textarea>
             </div>
+            
             <div class="full">
                 <div class="button" onclick="saveBlock(this.parentElement.parentElement)">Save Block</div>
                 <div class="button" onclick="loadBlock(this.parentElement.parentElement)">Load Block</div>
-                <div class="button" onclick="updateBlock(this.parentElement.parentElement)">Update Block</div>
             </div>
         `;
         document.getElementById('BrainGrid').appendChild(div);
