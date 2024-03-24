@@ -1,4 +1,89 @@
-function saveBlock(blockElement) {
+function saveAllBlocks() {
+    var data = {
+        name: document.getElementById('BrainName').value || 'Untitled',
+        blocks:[]
+    }
+    if (data.name == 'Untitled') return alert('Please name your agent first...');
+    var blocks = document.querySelectorAll('#BrainGrid > div');
+    blocks.forEach(element=>{
+        data.blocks.push(saveBlock(element, false))
+    })
+
+     // Create a Blob object representing the JSON data
+     var json = JSON.stringify(data, null, 2); 
+     var blob = new Blob([json], { type: 'application/json' });
+
+     // Create an anchor element and use the Blob URL as the href
+     var url = URL.createObjectURL(blob);
+     var a = document.createElement('a');
+     a.href = url;
+     a.download = `${data.name} - Entire Brain.json`; // Set the file name for the download
+ 
+     // Append the anchor to the body, trigger the download, and remove the anchor
+     document.body.appendChild(a);
+     a.click();
+     document.body.removeChild(a);
+ 
+     // Revoke the Blob URL to free up resources
+     URL.revokeObjectURL(url);
+}
+
+// Function to trigger file input
+function loadAllBlocks() {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.click(); // Programmatically open the file dialog
+
+    // Once a file is selected, process it
+    fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        if (file) {
+            // Create a FileReader to read the file
+            const reader = new FileReader();
+
+            // Setup the onload event to process the file once read
+            reader.onload = (e) => {
+                const content = e.target.result;
+
+                // Parse the JSON content
+                try {
+                    const jsonData = JSON.parse(content);
+                    // Assign Name
+                    document.getElementById('BrainName').value = jsonData.name;
+
+                    // Block By Block
+                    Array.from(document.querySelectorAll('#BrainGrid > div')).reverse().forEach(blockElement=>{
+                        // Take Data From The File
+                        var blockData = jsonData.blocks.pop();
+                        console.log(blockData)
+                        // Iterate all the data in the block data
+                        Object.keys(blockData).forEach(key => {
+                            const input = blockElement.querySelector(`[name="${key}"]`);
+                            if (input) {
+                                if (input.type === 'checkbox') {
+                                    input.checked = blockData[key]; // Update checkboxes
+                                    if (input.name == 'active' && input.checked)
+                                        blockElement.classList.add('active');
+                                } else {
+                                    input.value = blockData[key]; // Update other inputs
+                                }
+                            }
+                        });
+                    });
+                    
+                    fileInput.value = ''; 
+                } catch (error) {
+                    fileInput.value = ''; 
+                    console.error('Error parsing JSON', error);
+                }
+            };
+
+            // Read the file as text
+            reader.readAsText(file);
+        }
+    };
+}
+
+function saveBlock(blockElement, saveFile=true) {
     // Initialize an empty object to store input values
     var data = {};
 
@@ -17,7 +102,7 @@ function saveBlock(blockElement) {
 
     // Convert the data object to a JSON string
     var json = JSON.stringify(data, null, 2); // Pretty print the JSON
-
+    if (saveFile == false) return data;
     // Create a Blob object representing the JSON data
     var blob = new Blob([json], { type: 'application/json' });
 
