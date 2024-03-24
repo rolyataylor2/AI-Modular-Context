@@ -13,9 +13,16 @@ Developers of advanced LLM models are aware of this exploit and have been activl
 ## Demo
 This demo is working on Claude 3 Sonnet/Haiku.
 
-## To Use
-- Navigate to the release folder
-- Double click whichever matches your platform
+# To Use
+How do I start making agents today? I'm glad you asked.
+
+## Downloads
+- Windows - https://github.com/rolyataylor2/AI-Modular-Context/raw/Editor/Release/AI%20Contexter-win.exe
+- Mac - https://github.com/rolyataylor2/AI-Modular-Context/raw/Editor/Release/AI%20Contexter-macos
+- Linux - https://github.com/rolyataylor2/AI-Modular-Context/raw/Editor/Release/AI%20Contexter-linux
+
+## How to use
+- Run the executable
 - Open: http://127.0.0.1 in your browser
 - Put your anthropic API key in the bottom of the window
 - Choose the model you want to use
