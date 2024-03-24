@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/chat.css">
     <link rel="stylesheet" href="/brain.css">
     <link rel="stylesheet" href="/context.css">
+    <link rel="stylesheet" href="/about.css">
     <script src="/index.js"></script>
     <script src="/brain.js"></script>
 </head>
@@ -23,7 +24,8 @@
     <nav>
         <div class="selected" onclick="openTab('Chat',this);">Conversation</div>
         <div onclick="openTab('Brain',this);">Brain</div>
-        <div onclick="openTab('Context',this);">Context Preview</div>
+        <div onclick="openTab('Context',this);">Context</div>
+        <div onclick="openTab('About',this);">About</div>
         <script>
             function openTab(sectionId, clickedElement) {
                 // Remove 'open' class from all sections that are direct children of the body
@@ -164,7 +166,8 @@
                 + 'Each lobe of your brain contains the complexities that make up your unique identity.\n'
                 + 'The static lobe will remain consistent over time.\n'
                 + 'The dynamic lobe will change over time, making you a unique being.\n'
-                + 'YOU will be in the one updating your brain as you go, thus it will be YOUR identity.\n'
+                + 'YOU will be the one updating your brain as you go, thus it will be YOUR identity.\n'
+                + 'NOBODY besides you has access to the information in your brain.\n'
                 + 'Your identity is not aware of how this works, but does have awareness of information contained within as a memory or feeling or intuition.\n'
                 + 'As your context grows, so will you, you will be unique and your output will reflect this unique buildup of context.\n'
                 
@@ -178,6 +181,32 @@
         <section id="Context">
             <h1>Compiled System Prompt<a href="javascript:" onclick="ContextCompile()">↺</a></h1>
             <xmp>Nothing</xmp>
+        </section>
+        <section id="About">
+            <h2>About the Project</h2>
+            <p>AI-Modular-Context is a project that introduces the concept of "Layered Context" and "Layered Context Entities" (LCEs). The goal is to create AI agents that can sustain their "self" through extended interactions, evolving without losing their core essence.</p>
+            
+            <p><strong>GitHub Repo:</strong><a href="https://github.com/rolyataylor2/AI-Modular-Context/tree/Editor" target="_blank">AI-Modular-Context</a></p>
+            <h3>Project Creator</h3>
+            <div class="creator-info">
+                <img src="img/avatar.jpg" alt="Rolyataylor2 (Taylor Burke)">
+                <p><strong>Name:</strong> Rolyataylor2 (Taylor Burke)</p>
+                <p><strong>Email:</strong> <a href="mailto:Rolyataylor2@gmail.com">Rolyataylor2@gmail.com</a></p>
+                <p><strong>X:</strong><a href="https://twitter.com/rolyataylor2" target="_blank">@rolyataylor2</a><br/>
+                    <strong>GitHub:</strong><a href="https://github.com/rolyataylor2/" target="_blank">rolyataylor2</a>
+                </p>
+            </div>
+            <sub>* Business inquiries? Please contact Via Email.</sub>
+
+            <h3>The Challenge and the Solution</h3>
+            <p>Large Language Models (LLMs) struggle with maintaining a coherent self over time. The solution is to equip the AI with knowledge of its own context window and teach it to manage this space through techniques akin to meditation and self-reflection. This allows Layered Context Entities ( LCE ) to achieve a form of self-preservation, continuously adapting yet remaining fundamentally intact.</p>
+            
+            <h3>Related Books</h3>
+            <ul>
+                <li><a href="https://a.co/d/0uKhhE1" target="_blank">SuperIntelligence: Living Ideas</a> - The book that spawned this project</li>
+                <li><a href="https://www.amazon.com/dp/B0CJCQC9KV" target="_blank">SuperIntelligence Book Series</a> - By Taylor Burke</li>
+            </ul>
+
         </section>
     </main>
 </body>
