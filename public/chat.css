@@ -4,10 +4,12 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto 100px;
-    width: 90%;
     height: 90%;
+    width: 80%;
     margin: 5% auto;
-    margin-bottom:0;
+    margin-bottom: 0;
+    padding: 10px 5%;
+    color: #EEE;
     
 }
 #Chat.loading::after {

@@ -1,15 +1,12 @@
 #Context {
     position:relative;
-    width: 90%;
-    height: 90%;
+    width: 80%;
     margin: 5% auto;
     margin-bottom:0;
+    padding: 10px 5%;
+    color: #EEE;
 }
-#Context h1 {
-    color:white;
-    font-size:1.1rem;
-    margin:0;
-}
+
 #Context xmp {
     display: block;
     width: 90%;
@@ -18,4 +15,5 @@
     background-color: #CCC;
     margin: 10px auto;
     padding: 10px;
+    color:black;
 }
