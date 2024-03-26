@@ -1,8 +1,6 @@
 #Brain {
     position:relative;
-    display:grid;
-    grid-template-columns: 1fr;
-    grid-template-rows:auto 100px;
+
     width: 90%;
     height: 80%;
     margin: 5% auto;
@@ -22,16 +20,23 @@
     line-height: 100px;
     z-index:100;
 }
+#Brain > #BrainOptions {
+    display:inline-block;
+    width:90%;
+    margin:0 auto;
+    height:32px;
+    color:white;
+}
+#Brain > #BrainOptions > input {
+    width:auto;
+    display:inline;
+}
 #Brain > #BrainGrid {
     display:grid;
-    position:absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
     grid-template-columns:1fr 1fr 1fr 1fr;
     grid-template-rows:1fr 1fr 1fr 1fr;
     gap:10px;
+    height:90%;
     background: url(/img/brain.png);
     background-size: cover;
     background-position: center;

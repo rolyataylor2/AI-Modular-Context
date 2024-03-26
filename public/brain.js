@@ -1,7 +1,8 @@
 function saveAllBlocks() {
     var data = {
-        name: document.getElementById('BrainName').value || 'Untitled',
-        blocks:[]
+        'name': document.getElementById('BrainName').value || 'Untitled',
+        'autoupdate': document.getElementById('AutoUpdateBrain').checked,
+        'blocks':[]
     }
     if (data.name == 'Untitled') return alert('Please name your agent first...');
     var blocks = document.querySelectorAll('#BrainGrid > div');
@@ -49,7 +50,7 @@ function loadAllBlocks() {
                     const jsonData = JSON.parse(content);
                     // Assign Name
                     document.getElementById('BrainName').value = jsonData.name;
-
+                    document.getElementById('AutoUpdateBrain').checked = jsonData.autoupdate || false;
                     // Block By Block
                     Array.from(document.querySelectorAll('#BrainGrid > div')).reverse().forEach(blockElement=>{
                         // Take Data From The File
@@ -226,7 +227,9 @@ function updateBlock(blockElement) {
         });
 }
 
-async function updateAllBlocks() {
+async function updateAllBlocks(override=false) {
+    if (override == false && !document.getElementById('AutoUpdateBrain').checked) return console.log('Auto Update Brain Is Off');
+
     var blocks = document.querySelectorAll('#BrainGrid > div.active');
     for(var i=0;i<blocks.length;i++) {
         await updateBlock(blocks[i]);

@@ -19,7 +19,6 @@
         <a href="/instructions.txt">(?)</a>
         <a href="javascript:" onclick="saveAllBlocks()">Export</a>
         <a href="javascript:" onclick="loadAllBlocks()">Import</a>
-        <a href="javascript:" onclick="updateAllBlocks().then().catch()">Update Brain</a>
     </header>
     <nav>
         <div class="selected" onclick="openTab('Chat',this);">Conversation</div>
@@ -52,7 +51,6 @@
         </script>
     </nav>
     <footer>
-       
         <div><label for="">API-Key</label><input id="API_KEY" type="text" placeholder="Using Saved API KEY, If there is one..."></div>
         <div>
             <label for="">Model</label>
@@ -101,7 +99,7 @@
                 <div class="button"
                     onclick="if (confirm('Do you want to delete the last message in the chat?')) API_RemoveLastMessage()">
                     Delete Last Message</div>
-                <div class="button" onclick="API_FetchMessage().then(API_AddBotMessage);">Retrieve</div>
+                <div class="button" onclick="API_FetchMessage().then(API_AddBotMessage).then(updateAllBlocks);">Retrieve</div>
             </div>
             </div>
         </section>
@@ -110,6 +108,11 @@
 
         <!-- Brain -->
         <section id="Brain">
+            <div id="BrainOptions">
+                <div class="button" onclick="updateAllBlocks(true)">Update Entire Brain</div>
+                <label>Auto-Update-Brain</label>
+                <input type="checkbox" id="AutoUpdateBrain"/>
+            </div>
             <input type="file" id="fileInput" style="display:none;" accept="application/json">
             <div id="BrainGrid"></div>
         </section>
