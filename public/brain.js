@@ -61,8 +61,11 @@ function loadAllBlocks() {
                             if (input) {
                                 if (input.type === 'checkbox') {
                                     input.checked = blockData[key]; // Update checkboxes
-                                    if (input.name == 'active' && input.checked)
-                                        blockElement.classList.add('active');
+                                    if (input.name == 'active') {
+                                        if (input.checked)
+                                            blockElement.classList.add('active');
+                                        else blockElement.classList.remove('active');
+                                    }
                                 } else {
                                     input.value = blockData[key]; // Update other inputs
                                 }
@@ -148,8 +151,11 @@ function loadBlock(blockElement) {
                         if (input) {
                             if (input.type === 'checkbox') {
                                 input.checked = jsonData[key]; // Update checkboxes
-                                if (input.name == 'active' && input.checked)
-                                    blockElement.classList.add('active');
+                                if (input.name == 'active') {
+                                    if (input.checked)
+                                        blockElement.classList.add('active');
+                                    else blockElement.classList.remove('active');
+                                }
                             } else {
                                 input.value = jsonData[key]; // Update other inputs
                             }
@@ -184,10 +190,9 @@ function updateBlock(blockElement) {
     var updateScriptElement = blockElement.querySelector('textarea[name="update"]');
     var dynamicContextElement = blockElement.querySelector('textarea[name="dynamic"]');
     var updateScript = updateScriptElement.value;
+
     updateScript = updateScript.replace('{{{{brain}}}}', ContextCompileBrain());
     updateScript = updateScript.replace('{{{{chatlog}}}}', ChatCompile());
-
-
 
     // Compile The API Object
     var data = { ...API_Object };
@@ -199,8 +204,9 @@ function updateBlock(blockElement) {
     data.api_key = API_Key();
     data.api_key_save = API_Key_Save();
 
+    
     // Approved
-    document.getElementById('Brain').classList.add('loading');
+    blockElement.classList.add('loading');
     return fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -210,15 +216,23 @@ function updateBlock(blockElement) {
     })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('Brain').classList.remove('loading');
+            blockElement.classList.remove('loading');
             dynamicContextElement.value = data.content[0].text;
             return data.content[0].text;
         })
         .catch(error => {
-            document.getElementById('Brain').classList.remove('loading');
+            blockElement.classList.remove('loading');
             console.log(error);
         });
 }
+
+async function updateAllBlocks() {
+    var blocks = document.querySelectorAll('#BrainGrid > div.active');
+    for(var i=0;i<blocks.length;i++) {
+        await updateBlock(blocks[i]);
+    }
+}
+
 async function refineBlock(blockElement) {
     // Confirm
     if (!confirm("This will take a few minutes and will use a lot of tokens both in Opus and Haiku. Are you sure?") ) return;
@@ -232,19 +246,20 @@ async function refineBlock(blockElement) {
     var data =  {
         apiKey: API_Key(),
         
-        description: `Given just the chatlog ( between you and them ) and XML representing a snapshot of your brain, `
-        + `Give me the updated content of ONLY this XML tag: <lobe name='${blockName}' description='${blockDescription}'><dynamic>[updated content]</dynamic></lobe>; `
-        + `Use the 'name' and 'description' attributes to figure out what content needs to be inside of the tag; `
-        + ( blockTestReplace ? `Discard the old content of the tag; `:`Be sure to preserve and update what is already in the tag; `)
-        + `ONLY output the updated content of the <dynamic></dynamic> tag within the given tag, nothing else;`,
+        description: `Given just the current chatlog and an XML representing a snapshot of the brain of the entity, `
+        + `Write a prompt that will extract and update the content of the brain lobe: <lobe name='${blockName}' description='${blockDescription}'><dynamic>[updated content]</dynamic></lobe>; `
+        + `The 'name' and 'description' attributes are a guide for what to extract and update, the entity is referred to as 'You'; `
+        + `The prompt should represent the lobe of the brain (No name or identity of its own) with all the skills necessary to update itself; `
+        + `The final result should be the content of only the <dynamic></dynamic> tag within the lobe, nothing else; `
+        + ( blockTestReplace ? `The prompt must discard the old content of the tag; `:`The prompt must be sure to preserve and update what is already in the tag; `),
         inputVariables: [
             {
               "variable": "chatlog",
-              "description": "The current chat you and them are participating in."
+              "description": "The current chat the entity and user are participating in."
             },
             {
               "variable": "brain",
-              "description": "XML tag of your brain, the brain contains various lobe tags. <brain><lobe><dynamic></dynamic></lobe></brain>"
+              "description": "XML tag of the entirety of the entity's brain, the brain contains various lobe tags. <brain><lobe><dynamic></dynamic></lobe></brain>"
             }
         ],
         numTestCases: parseInt(blockTestCases),

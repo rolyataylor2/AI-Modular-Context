@@ -45,6 +45,19 @@
     color:white;
     background-color:#000;
 }
+#Brain > #BrainGrid > div.loading::after {
+    content: "Updating Block";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(24, 107, 43, 0.7);
+    color: rgb(254, 133, 133);
+    text-align: center;
+    line-height: 100px;
+    z-index:100;
+}
 #Brain > #BrainGrid > div.active {
     background-color:#000;
 }
