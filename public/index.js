@@ -42,28 +42,7 @@ function API_AddBotMessage(message) {
     ChatUpdate();
 }
 
-function estimateTokens(messages, systemPrompt = "") {
-    // A very simple tokenizer function
-    function simpleTokenize(text) {
-        // Splitting by spaces and punctuation, this regex can be adjusted
-        if (text === void 0) return 0;
-        const tokens = text.split(/[\s,.!?]+/);
-        return tokens.filter(token => token.length > 0);
-    }
 
-    let totalTokenCount = 0;
-
-    messages.forEach(message => {
-        const { role, content } = message;
-        // Assuming you want to count tokens in both role and content
-        const roleTokens = simpleTokenize(role);
-        const contentTokens = simpleTokenize(content);
-        const messageTokenCount = roleTokens.length + contentTokens.length;
-        totalTokenCount += messageTokenCount;
-    });
-    simpleTokenize(systemPrompt);
-    return totalTokenCount;
-}
 
 function API_FetchMessage() {
     // Compile The API Object
@@ -74,9 +53,17 @@ function API_FetchMessage() {
     data.api_key_save = API_Key_Save();
 
     // Estimate Tokens
-    var estimatedTokens = estimateTokens(data.messages, data.system);
-    if (!confirm(`This will use more than ${estimatedTokens} tokens, Are you sure?`))
-        return;
+    var estimatedTokens = data.system.length/4;
+    estimatedTokens += data.messages.reduce(function(accumulator, currentObject) {
+        return accumulator + currentObject.content + " "; // Add a space or any other delimiter as needed
+      }, "").length/4;
+    var smartUpdateWarning = (document.getElementById('SmartUpdateBrain').checked ? `Smart Update is on which could reduce token usage.\n` : 'Smart Update is off..\n');
+    var autoUpdateWarning = (document.getElementById('AutoUpdateBrain').checked ? `Brain Auto Update could use: ${estimatedTokens * 16} tokens\n` +  smartUpdateWarning : 'Brain Auto Update is off..\n')
+    if (!confirm(`This will use roughly ${estimatedTokens} input tokens\n`
+                + `Using the model: ${data.model}\n`
+                + autoUpdateWarning
+                + `\nAre you sure you want to proceed?`))
+        throw 'User cancelled request!';
 
     // Approved
     document.getElementById('Chat').classList.add('loading');

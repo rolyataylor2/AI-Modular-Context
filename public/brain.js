@@ -175,6 +175,11 @@ function loadBlock(blockElement) {
     };
 }
 
+
+
+function loadUrlBlock(blockElement) {
+
+}
 function ChatCompile() {
     var compiledChat = '<chatlog>You:Hello\n';
     API_AdditionalMessages.forEach(entry=>{
@@ -184,7 +189,21 @@ function ChatCompile() {
     compiledChat += '</chatlog>';
     return compiledChat;
 }
+function updateCompileBrain() {
+    var brainXML = '<Brain>\n';
+    var blocks = GetBrainGrid();
+    blocks.forEach(block => {
+        if (block.active == true) {
+            brainXML += `<lobe name="${block.name}" description="${block.description}">\n`;
+            brainXML += `<dynamic>${block.dynamic}</dynamic>\n`;
+            brainXML += `</lobe>\n`;
+        }
+    })
+    brainXML += '</Brain>';
+    return brainXML;
+}
 function updateBlock(blockElement) {
+    console.log('Updating Lobe: ' + blockElement.querySelector('input[name="name"]').value);
     var activeElement = blockElement.querySelector('input[name="active"]');
     if (activeElement.checked == false ) return alert('This block is not active.');
 
@@ -192,7 +211,7 @@ function updateBlock(blockElement) {
     var dynamicContextElement = blockElement.querySelector('textarea[name="dynamic"]');
     var updateScript = updateScriptElement.value;
 
-    updateScript = updateScript.replace('{{{{brain}}}}', ContextCompileBrain());
+    updateScript = updateScript.replace('{{{{brain}}}}', updateCompileBrain());
     updateScript = updateScript.replace('{{{{chatlog}}}}', ChatCompile());
 
     // Compile The API Object
@@ -229,7 +248,56 @@ function updateBlock(blockElement) {
 
 async function updateAllBlocks(override=false) {
     if (override == false && !document.getElementById('AutoUpdateBrain').checked) return console.log('Auto Update Brain Is Off');
+    if (document.getElementById('SmartUpdateBrain').checked) {
+        // Run a prompt to check all the blocks if they need to be updated
+        // Compile The API Object
+        var data = { ...API_Object };
+        data.messages = [{
+            'role':'user',
+            'content':`Based on the chat and your current brain, think step by step which lobes (without naming them) need to be updated that you feel need to be updated at this moment. `
+            + `Then list ALL of the complete names of the lobes that you feel need to be updated. Any lobe not listed WILL NOT BE UPDATED! `
+            + `ANY complete lobe names appearing in your output will be updated. Try to updated the minimum number of lobes, but remember vital information. `
+            + `All Lobes will use the chat and the brain to update themselves. `
+            + `Updating them saves progress and information from the chat, All information in the chat is temporary and not guaranteed to be available later.`
+            + `Only update lobes that need updating, meaning if there is information in the chat or something needs to be saved or elaborated on.`
+        }];
+        data.system = ContextCompile() + `<chatlog>${ChatCompile()}</chatlog>`;
+        data.api_key = API_Key();
+        data.api_key_save = API_Key_Save();
 
+        
+        // Approved
+        document.getElementById('Brain').classList.add('loading');
+        return fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(async function(data) {
+                document.getElementById('Brain').classList.remove('loading');
+                var lobesText = data.content[0].text;
+                console.log(lobesText);
+                
+                var blocks = document.querySelectorAll('#BrainGrid > div.active');
+                var blocks = Array.from(document.querySelectorAll('#BrainGrid > div.active'));
+                    blocks = blocks.filter(function(block) {
+                        var name = block.querySelector('input[name="name"]').value;
+                        return lobesText.includes(name);
+                    });
+                for(var i=0;i<blocks.length;i++) {
+                    await updateBlock(blocks[i]);
+                }
+                
+            })
+            .catch(error => {
+                document.getElementById('Brain').classList.remove('loading');
+                console.log(error);
+            });
+    }
+    // Not smart update
     var blocks = document.querySelectorAll('#BrainGrid > div.active');
     for(var i=0;i<blocks.length;i++) {
         await updateBlock(blocks[i]);
@@ -250,7 +318,7 @@ async function refineBlock(blockElement) {
         apiKey: API_Key(),
         
         description: `Given just the current chatlog and an XML representing a snapshot of the brain of the entity, `
-        + `Write a prompt that will extract and update the content of the brain lobe: <lobe name='${blockName}' description='${blockDescription}'><dynamic>[updated content]</dynamic></lobe>; `
+        + `Write a prompt that will extract and update the content of the brain lobe: <lobe name='${blockName}' description='${blockDescription}'><dynamic>[updated content]</dynamic><static>[ignore this]</static></lobe>; `
         + `The 'name' and 'description' attributes are a guide for what to extract and update, the entity is referred to as 'You'; `
         + `The prompt should represent the lobe of the brain (No name or identity of its own) with all the skills necessary to update itself; `
         + `The final result should be the content of only the <dynamic></dynamic> tag within the lobe, nothing else; `
@@ -332,7 +400,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 <label for="">Static Context</label>
                 <textarea name="static"></textarea>
             </div>
-            
+            <div class="full">
+                <label for="">URL Context<a href="javascript:" onclick="">Load</a></label>
+                <input name="url" placeholder="Load information from a URL">
+            </div>
+
             <div class="full">
                 <div class="button" onclick="saveBlock(this.parentElement.parentElement)">Save Block</div>
                 <div class="button" onclick="loadBlock(this.parentElement.parentElement)">Load Block</div>
