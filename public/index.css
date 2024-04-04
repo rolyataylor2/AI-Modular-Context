@@ -10,68 +10,89 @@ a {
 
 body {
     position: fixed;
-    top: 5px;
-    bottom: 5px;
-    right: 5px;
-    left: 5px;
-    margin: 5px auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0px;
     padding: 0px;
-    background: url(/img/background.webp);
-    background-size: cover;
-    background-position: center;
-    border-radius: 1rem;
+    background: black;
     overflow: scroll;
     font-family: sans-serif;
 }
+
+
 
 header {
     position: absolute;
     top: 0px;
     left: 0px;
+    right: 0px;
     font-size: 0.7rem;
-    background-color: black;
+    background-color: #5174b4;
     color: white;
-    padding: 5px 10px;
-    border-radius: 0 10px 10px 0;
+    padding: 10px 10px;
     z-index: 10;
     display: flex;
     justify-content: space-around;
-    /* This will evenly space the children */
     align-items: center;
+    box-shadow: 1px 1px 1px black;
 }
-
+header img {
+    height:32px;
+}
+header > a {
+    font-size:32px;
+    padding:0; margin:0 10px;
+    line-height:0;
+}
 header>b {
     width: 100px;
 }
 
 header input {
     display: inline;
-    background-color: #222;
+    background-color: transparent;
     padding: 4px;
     color: white;
+    border: 0;
+    border-radius: 0;
+    font-weight: bolder;
 }
+header input:hover, header input:focus {
+    border:0px;
+}
+
+
 
 nav {
+    display:none;
+    opacity: 0;
     position: absolute;
-    bottom: 32px;
+    top: 0px;
     left: 0px;
     right: 0px;
-    background-color: black;
-    height: 32px;
-    display: flex;
-    justify-content: space-around;
-    align-items: start;
+    bottom: 0px;
+    padding-top:64px;
+    background-color: #252525;
+    transition: opacity 1s ease, display 0s 1s; /* Opacity transition takes 1 second */
+}
+nav.open {
+    opacity: 1;
+    display: block;
+    transition: opacity 1s ease, display 0s; 
 }
 
+
 nav>div {
+    display:block;
+    width:100%;
+    margin:10px;
+    padding:5px;
     color: #999;
     text-transform: uppercase;
     font-weight: bolder;
     cursor: grab;
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: center;
-    line-height: 32px;
 }
 
 nav>div:active {
@@ -93,51 +114,49 @@ footer {
     display: grid;
     grid-template-columns: 4fr 1fr 1fr;
 
-    background-color: black;
+    background-color: #333;
     color: white;
     z-index: 10;
 }
 
-footer>div>select {
-    width: 100%;
-}
-
-footer>div {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    width: 100%;
-    height: 24px;
-    margin: 0px auto;
-    padding: 10px;
-
-}
-
-footer>div>label {
-    font-weight: bolder;
-    font-size: 0.7rem;
-    padding: 10px;
-    text-align: right;
-
-}
-
 main {
     position: absolute;
-    top: 16px;
-    left: 50%;
-    width: 900px;
-    margin-left: -450px;
-    bottom: 60px;
+    top: 0px;
+    left: 0px;
+    right:0px;
+    bottom: 0px;
     overflow: scroll;
+    background-color: #333;
     z-index: -1;
 }
 
 main>section {
     position: relative;
-    width: 80%;
-    min-height: 80%;
     padding: 10px;
-    background-color: #333;
-    border-radius: 10px;
+    background-color: transparent;
+    min-height: 90%;
+    width: 98%;
+    margin: 36px 1%;
+    margin-bottom: 0;
+    padding: 10px 0;
+    color: #EEE;
+}
+main>section>.segment {
+    color:#333;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(209, 213, 219, 0.3);
+}
+main>section>.segment>label {
+    display:block;
+    width:100%;
+    margin:5px;
+}
+main>section>.segment>sub {
+    display:block;
+    width:100%;
+    margin:5px;
 }
 
 main>section:not(.open) {

@@ -1,3 +1,6 @@
+
+// Libraries
+
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -5,6 +8,7 @@ const port = 80;
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
+// Resolve Local Path
 function resolvePath(relativePath) {
   return path.join(__dirname, relativePath);
 }
@@ -17,6 +21,10 @@ app.use(express.json({ limit: '50mb' }));
 app.get('/', (req, res) => {
   res.sendFile(resolvePath('public/index.html'));
 });
+
+
+
+
 
 
 // Generate Ideal Prompt
@@ -34,46 +42,61 @@ app.post('/generate-prompt', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while generating the optimal prompt' });
   }
 });
-// Serve completions.js at /Chat/Completions
 
-function GenerateErrorCompletion(error) {
-  return {
-    content:[
-      {
-        text:"Error Occurred: " + error
-      }
-    ]
-  };
-}
+
+// API passthrough
+// POST request
+// req.body[]
+//         system, max_tokens, api_key, api_key_save, messages, model
 app.post('/Chat/Completions', (req, res) => {
+  function GenerateErrorCompletion(error) {
+    return {
+      content: [
+        {
+          text: "Error Occurred: " + error
+        }
+      ]
+    };
+  }
+
   // Collect Data
   const data = {
+    api_url: 'https://api.anthropic.com/v1/messages',
     system: req.body.system,
     messages: req.body.messages,
     model: req.body.model,
     max_tokens: req.body.max_tokens,
     temperature: 0
   }
-  console.log(data);
-  const API_FILE = resolvePath('public/API_KEY');
 
-  // Load from file
-  try {
-    if (req.body.api_key_save) {
-      fs.writeFileSync(API_FILE, req.body.api_key, { encoding: 'utf-8' });
+  //
+  // API KEY
+  //
+  const API_KEY = (() => {
+    const API_FILE = resolvePath('public/API_KEY');
+
+    // Load from file
+    try {
+      if (req.body.api_key_save) {
+        fs.writeFileSync(API_FILE, req.body.api_key, { encoding: 'utf-8' });
+      }
+      return req.body.api_key || fs.readFileSync(API_FILE, { encoding: 'utf-8' });
+    } catch (err) {
+      console.log('Could not load API Key From File');
+      return req.body.api_key
     }
-    API_KEY = req.body.api_key || fs.readFileSync(API_FILE, { encoding: 'utf-8' });
-  } catch (err) {
-    console.log(err);
-    API_KEY = req.body.api_key
-  }
+  })();
   if (API_KEY.length < 10) {
     res.json(GenerateErrorCompletion("INVALID API KEY"));
     return;
   }
 
-  // Do API Call
-  fetch('https://api.anthropic.com/v1/messages', {
+
+
+  //
+  // API Call
+  //
+  fetch(data.api_url, {
     method: 'POST',
     headers: {
       'x-api-key': API_KEY,
@@ -85,13 +108,17 @@ app.post('/Chat/Completions', (req, res) => {
     .then(response => response.json())
     .then((data) => {
       console.log(data);
-      if (data.error !== void 0) res.json(GenerateErrorCompletion(JSON.stringify(data)))
-      else res.json(data);
+      if (data.error !== void 0) throw 'Error occurred with API: ' + JSON.stringify(data.error);
+      res.json(data);
     }).catch((error) => {
       res.json(GenerateErrorCompletion(JSON.stringify(error)));
     });
 });
 
+
+
+
+// Start Server
 app.listen(port, () => {
   console.log(`Successfully listening on Port:${port}`);
   console.log('----- Please open the following page in your browser -----');
@@ -99,5 +126,5 @@ app.listen(port, () => {
   console.log('\u001b]8;;http://127.0.0.1\u0007http://127.0.0.1\u001b]8;;\u0007');
   console.log(' ');
   console.log('-----------------------------------------------------------')
-  
+
 });

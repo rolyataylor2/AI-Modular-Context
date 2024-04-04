@@ -3,13 +3,7 @@
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 100px;
-    height: 90%;
-    width: 80%;
-    margin: 5% auto;
-    margin-bottom: 0;
-    padding: 10px 5%;
-    color: #EEE;
+    grid-template-rows: auto 64px;
     
 }
 #Chat.loading::after {
@@ -23,12 +17,13 @@
     color: White;
     text-align: center;
 }
+
+
 #ChatContent {
     position:relative;
     height:100%;
     width:100%;
     margin: 0 auto;
-    box-shadow:inset 0px 0px 5px black;
 }
 #ChatContent > div:empty::before {
     display:block;
@@ -116,11 +111,26 @@
     vertical-align: center;
 }
 
+
+
+
+
+
+
 #ChatControls {
     display:grid;
     grid-template-columns:5fr 1fr;
     height:32px;
 }
+#ChatControls textarea {
+    min-height:64px;
+    height:64px;
+    resize:none;
+}
+#ChatControls .button {
+    width:90%;
+}
+
 
 
 

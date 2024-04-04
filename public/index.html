@@ -14,16 +14,19 @@
     <!-- Header content  -->
     <header>
         <a href="javascript:" onclick="location.reload()">↺</a>
-        <b>LCE Demo:</b>
-        <input type="text" id="BrainName" placeholder="Project Name"/>
-        <a href="/instructions.txt">(?)</a>
-        <a href="javascript:" onclick="saveAllBlocks()">Export</a>
-        <a href="javascript:" onclick="loadAllBlocks()">Import</a>
+        <img src="/img/bot_avatar.png" alt="">
+        <input type="text" id="BrainName" value="Nameless"/>
+        <a href="/instructions.txt">?</a>
+        <a href="javascript:" onclick="document.querySelector('nav').classList.toggle('open');">
+            <img src="/img/bot_settings.png" alt="">
+        </a>
     </header>
-    <nav>
+
+    <nav onclick="this.classList.remove('open')">
         <div class="selected" onclick="openTab('Chat',this);">Conversation</div>
         <div onclick="openTab('Brain',this);">Brain</div>
         <div onclick="openTab('Context',this);">Context</div>
+        <div onclick="openTab('Settings',this);">Settings</div>
         <div onclick="openTab('About',this);">About</div>
         <script>
             function openTab(sectionId, clickedElement) {
@@ -50,18 +53,6 @@
             }
         </script>
     </nav>
-    <footer>
-        <div><label for="">API-Key</label><input id="API_KEY" type="text" placeholder="Using Saved API KEY, If there is one..."></div>
-        <div>
-            <label for="">Model</label>
-            <select onchange="API_Object.model = this.value;">
-                <option>claude-3-haiku-20240307</option>
-                <option>claude-3-sonnet-20240229</option>
-            </select>
-        </div>
-        <div><label for="">Save</label><input id="API_KEY_SAVE" type="checkbox"></div>
-    </footer>
-
 
     <main>
         <!-- Chat -->
@@ -77,13 +68,8 @@
                     content.appendChild(newChat);
                 });
             }
-            function chatKeyEnter(event) {
-                if (event.keyCode === 13 || event.which === 13) {
-                    chatEnter();
-                }
-            }
             function chatEnter() {
-                const el = document.querySelector('#ChatControls > input');
+                const el = document.querySelector('#ChatControls > textarea');
                 if (el.value.length < 3) return;
                 API_AddUserMessage(el.value)
                 el.value = '';
@@ -94,13 +80,11 @@
                 <div></div>
             </div>
             <div id="ChatControls">
-                <input type="text" onkeypress="chatKeyEnter(event)" placeholder="Message...">
-                <div class="button" onclick="chatEnter()">Send</div>
-                <div class="button"
-                    onclick="if (confirm('Do you want to delete the last message in the chat?')) API_RemoveLastMessage()">
-                    Delete Last Message</div>
-                <div class="button" onclick="API_FetchMessage().then(API_AddBotMessage).then(updateAllBlocks);">Retrieve</div>
-            </div>
+                <textarea type="text" placeholder="Message..."></textarea>
+                <div>
+                    <div class="button" onclick="chatEnter()">Send</div>
+                    <div class="button" onclick="API_FetchMessage().then(API_AddBotMessage).then(updateAllBlocks);">Retrieve</div>
+                </div>
             </div>
         </section>
 
@@ -108,13 +92,8 @@
 
         <!-- Brain -->
         <section id="Brain">
-            <div id="BrainOptions">
-                <div class="button" onclick="updateAllBlocks(true)">Update Entire Brain</div>
-                <label>Auto-Update-Brain</label>
-                <input type="checkbox" id="AutoUpdateBrain"/>
-                <label>Smart Update (ask the AI which blocks)</label>
-                <input type="checkbox" id="SmartUpdateBrain"/>
-            </div>
+            <h1>Agents Brain</h1>
+            <sub>Changes made here could destroy your entity, it is recommended you export in settings before proceeding.</sub>
             <input type="file" id="fileInput" style="display:none;" accept="application/json">
             <div id="BrainGrid"></div>
         </section>
@@ -187,6 +166,47 @@
             <h1>Compiled System Prompt<a href="javascript:" onclick="ContextCompile()">↺</a></h1>
             <xmp>Nothing</xmp>
         </section>
+
+
+
+
+
+        <section id="Settings">
+            <h2>Settings</h2>
+            <h2>Your Anthropic Key</h2>
+            <div>
+                <label for="">Key:</label>
+                <sub>This will only be used for direct calls to Anthropic, Your key remains private.</sub>
+                <input id="API_KEY" type="text" placeholder="Using Saved API KEY, If there is one...">
+            </div>
+            <div>
+                <label for="">Save For Later</label>
+                <input id="API_KEY_SAVE" type="checkbox">
+            </div>
+            <br/>
+            <a href="javascript:" onclick="saveAllBlocks()">Export</a>
+            <a href="javascript:" onclick="loadAllBlocks()">Import</a>
+            <div>
+                <label for="">Model</label>
+                <sub>Haiku ($) - Sonnet ($$) - Opus ($$$)</sub>
+                <select onchange="API_Object.model = this.value;">
+                    <option>claude-3-haiku-20240307</option>
+                    <option>claude-3-sonnet-20240229</option>
+                </select>
+            </div>
+
+            <div id="BrainOptions">
+                <div class="button" onclick="updateAllBlocks(true)">Update Entire Brain</div>
+                <label>Auto-Update-Brain</label>
+                <input type="checkbox" id="AutoUpdateBrain"/>
+                <label>Smart Update (ask the AI which blocks)</label>
+                <input type="checkbox" id="SmartUpdateBrain"/>
+            </div>
+        </section>
+
+
+
+
         <section id="About">
             <h2>About the Project</h2>
             <p>AI-Modular-Context is a project that introduces the concept of "Layered Context" and "Layered Context Entities" (LCEs). The goal is to create AI agents that can sustain their "self" through extended interactions, evolving without losing their core essence.</p>

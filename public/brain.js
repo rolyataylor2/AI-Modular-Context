@@ -359,56 +359,72 @@ async function refineBlock(blockElement) {
 document.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < 16; i++) {
         var div = document.createElement('div');
+        div.onclick = function (event) {
+            this.classList.add('expanded');
+        }.bind(div);
         div.innerHTML = `
-            <div class="expand" onclick="this.parentElement.classList.toggle('expanded')">
-                <label for="">&#10530;</label>
+            <div class="full small">
+                <label for="">Name</label>
+                <input name="name" autocomplete="off" type="text" placeholder="Name">
             </div>
-            <div class="activate">
+            <div class="full">
+                <label for="">Description</label>
+                <div>
+                    <input name="description" type="text" placeholder="What is this?">
+                    <sub>Refer to LCE as "you" ( Example: This contains your feelings about ... )</sub>
+                </div>
+            </div>
+            <div class="full">
                 <label for="">Active</label>
                 <input name="active" type="checkbox" onclick="this.parentElement.parentElement.classList.toggle('active')">
             </div>
-            <div class="full small">
-                <label for="">Name</label>
-                <input name="name" type="text" placeholder="Name">
+            <div class="full">
+                <label for="">
+                    Update Script<br/>
+                    <div class="button" onclick="refineBlock(this.parentElement.parentElement)">Autofill</div>
+                </label>
+                <div>
+                    <textarea name="update"></textarea>
+                    <sub>
+                        <b>Autofill Settings:</b>
+                        Cases: <input class="tiny" type="text" name="refine-test" value="3"/>
+                        Prompts: <input class="tiny" type="text" name="refine-prompts" value="2"/>
+                        Replace: <input class="tiny" type="checkbox" name="refine-replace"/>
+                    </sub>
+                    <sub>Be sure to include: {{{{brain}}}} and {{{{chatlog}}}}</sub>
+                </div>
             </div>
             <div class="full">
-                <label for="">Description ( Opus uses Name/Description to write the update, refer to the bot as "you" )</label>
-                <input name="description" type="text" placeholder="What is this?">
-            </div>
-            <div class="full">
-                <div class="button" onclick="refineBlock(this.parentElement.parentElement)">Generate Script</div>
-                <label>
-                    Options:
-                    Test Cases: <input class="tiny" type="text" name="refine-test" value="3"/>
-                    Test Prompts: <input class="tiny" type="text" name="refine-prompts" value="2"/>
-                    Replace Content: <input class="tiny" type="checkbox" name="refine-replace"/>
-                </label><br/>
-                <label for="">Update Script ( Be sure to include: {{{{brain}}}} and {{{{chatlog}}}} )</label>
-                
-                <textarea name="update"></textarea>
-            </div>
-            <div class="full">
-                <div class="button" onclick="updateBlock(this.parentElement.parentElement)">vv</div>
-                <label>Use Haiku + Update Script to update the Dynamic Context</label>
-            </div>
-            <div class="full">
-                <label for="">Dynamic Context</label>
-                <textarea name="dynamic"></textarea>
+                <label for="">
+                    Dynamic Context
+                    <div class="button" onclick="updateBlock(this.parentElement.parentElement)">Update</div>
+                </label>
+                <div>
+                    <textarea name="dynamic"></textarea>
+                    <sub>* Updating this will run ( Haiku + Update Script ) to fill in this section</sub>
+                </div>
             </div>
 
             <div class="full">
                 <label for="">Static Context</label>
-                <textarea name="static"></textarea>
-            </div>
-            <div class="full">
-                <label for="">URL Context<a href="javascript:" onclick="">Load</a></label>
-                <input name="url" placeholder="Load information from a URL">
+                <div>
+                    <textarea name="static"></textarea>
+                    <sub>* The LCE will not have perfect recall of static lobe context
+                </div>
             </div>
 
             <div class="full">
-                <div class="button" onclick="saveBlock(this.parentElement.parentElement)">Save Block</div>
-                <div class="button" onclick="loadBlock(this.parentElement.parentElement)">Load Block</div>
+                <label>Save/Load Block</label>
+                <div>
+                    <div class="button" onclick="saveBlock(this.parentElement.parentElement.parentElement)">Save</div>
+                    <div class="button" onclick="loadBlock(this.parentElement.parentElement.parentElement)">Load</div>
+                </div>
             </div>
+            <div class="full" onclick="this.parentElement.classList.remove('expanded'); event.stopPropagation();">
+                <label for=""></label>
+                <div class="button">Close</div>
+            </div>
+            
         `;
         document.getElementById('BrainGrid').appendChild(div);
     }

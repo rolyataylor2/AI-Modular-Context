@@ -1,12 +1,5 @@
-#Brain {
-    position:relative;
 
-    width: 90%;
-    height: 80%;
-    margin: 5% auto;
-    margin-bottom:0;
-    background: #333;
-}
+/* Show loading screen  */
 #Brain.loading::after {
     content: "Fetching Best Prompt... Please Wait...";
     position: absolute;
@@ -20,30 +13,22 @@
     line-height: 100px;
     z-index:100;
 }
-#Brain > #BrainOptions {
-    display:inline-block;
-    width:90%;
-    margin:0 auto;
-    height:32px;
-    color:white;
-}
-#Brain > #BrainOptions > input {
-    width:auto;
-    display:inline;
-}
+
+
+/* Grid layout for the brain */
 #Brain > #BrainGrid {
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr;
     grid-template-rows:1fr 1fr 1fr 1fr;
     gap:10px;
-    height:90%;
     background: url(/img/brain.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* Blocks  */
+
+/* Brain Lobes */
 #Brain > #BrainGrid > div {
     position:relative;
     border:1px solid rgb(73, 73, 73);
@@ -63,20 +48,10 @@
     line-height: 100px;
     z-index:100;
 }
+
+/* Highlight active brain lobe */
 #Brain > #BrainGrid > div.active {
     background-color:#000;
-}
-#Brain > #BrainGrid > div.expanded {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    padding:10px;
-    overflow: scroll;
-    background-color: #333;
-    color:white;
-    z-index:11;
 }
 #Brain > #BrainGrid > div:not(.active):not(.expanded) {
     background-color:rgba(0,0,0,0.2)
@@ -84,58 +59,78 @@
 
 
 
+/* Edit the selected brain Lobe */
+#Brain > #BrainGrid > div.expanded {
+    position: fixed;
+    top: 48px;
+    left: 5px;
+    right: 5px;
+    bottom:5px;
+    
+    margin:0 auto;
+    padding:10px;
+    overflow: scroll;
+    background-color: #333;
+    color:white;
+    z-index:11;
+}
 
-/* Inside blocks */
+
+/* Formatting */
+#Brain > #BrainGrid  sub {
+    display: block;
+    text-align: right;
+    color: #AAA;
+    font-size: 0.8rem;
+    margin: 5px;
+}
+#Brain > #BrainGrid sub input {
+    background-color:transparent;
+    color:white;
+    border:none; outline:none;
+    border-bottom:1px solid white;
+    border-radius:0px;
+}
+#Brain > #BrainGrid  input[type="checkbox"] {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+}
+
+/* small lobe  */
+#Brain > #BrainGrid > div:not(.expanded) label {
+    display:none;
+}
 #Brain > #BrainGrid > div:not(.expanded) input {
-    background-color:transparent !important;
+    background:none;
     color:White;
     border:0px;
     outline:0px;
+    font-weight:bolder;
+    box-shadow:none;
 }
-#Brain > #BrainGrid > div:not(.expanded) > .full {
+#Brain > #BrainGrid > div:not(.expanded) > div.full {
     display:none;
-
 }
-#Brain > #BrainGrid > div:not(.expanded) > .small {
-    display:block;
-    margin-top:10px;
-
-}
-#Brain > #BrainGrid > div > div.full,
-#Brain > #BrainGrid > div > div.small {
-    width:90%;
-    margin:5px auto;
+#Brain > #BrainGrid > div:not(.expanded) > div.small {
+    display: grid;
+    grid-template-columns: auto;
+    padding:4px 10px;
 }
 
-#Brain > #BrainGrid > div:not(.expanded) > .expand,
-#Brain > #BrainGrid > div:not(.expanded) > .activate {
-    background-color:rgb(73, 73, 73);
+/* big lobe  */
+#Brain > #BrainGrid > div > div {
+    display: grid;
+    grid-template-columns: 100px auto;
+    margin:10px 0;
 }
-#Brain > #BrainGrid > div > .expand {
-    position:absolute;
-    top:0px; right:0px;
-    background-color:rgb(70, 110, 150);
-    color:#DDD;
-    z-index:10;
-    border-radius: 0 0 0 10px;
-    padding:3px 10px;
-}
-
-#Brain > #BrainGrid > div > .activate {
-    position:absolute;
-    bottom:0px; right:0px;
-    background-color:rgb(70, 110, 150);
-    color:#DDD;
-    z-index:10;
-    border-radius: 10px 0 0 0;
-    padding:3px;
-
-}
-
 
 #Brain > #BrainGrid > div > div > label {
     font-size:0.7rem;
+    text-align:center;
 }
+
 #Brain > #BrainGrid > div > .expand > label {
     font-size:1.1rem;
 }
