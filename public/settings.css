@@ -1,11 +1,6 @@
 #Settings {
-    position: relative;
-    width: 80%;
-    margin: 5% auto;
-    margin-bottom: 0;
-    background: #333;
-    padding: 10px 5%;
-    color: #EEE;
+    width:94%;
+    padding: 10px 3%;
   }
   
  #Settings > div {
