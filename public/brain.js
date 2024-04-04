@@ -1,7 +1,9 @@
 function saveAllBlocks() {
     var data = {
         'name': document.getElementById('BrainName').value || 'Untitled',
-        'autoupdate': document.getElementById('AutoUpdateBrain').checked,
+        'AutoUpdateBrain': document.getElementById('AutoUpdateBrain').checked,
+        'SmartUpdateBrain': document.getElementById('SmartUpdateBrain').checked,
+        'SettingChatModel': document.getElementById('SettingChatModel').value,
         'blocks':[]
     }
     if (data.name == 'Untitled') return alert('Please name your agent first...');
@@ -50,7 +52,9 @@ function loadAllBlocks() {
                     const jsonData = JSON.parse(content);
                     // Assign Name
                     document.getElementById('BrainName').value = jsonData.name;
-                    document.getElementById('AutoUpdateBrain').checked = jsonData.autoupdate || false;
+                    document.getElementById('AutoUpdateBrain').checked = jsonData.AutoUpdateBrain || false;
+                    document.getElementById('SmartUpdateBrain').checked = jsonData.SmartUpdateBrain || false;
+                    document.getElementById('SettingChatModel').value = jsonData.SettingChatModel || 0;
                     // Block By Block
                     Array.from(document.querySelectorAll('#BrainGrid > div')).reverse().forEach(blockElement=>{
                         // Take Data From The File

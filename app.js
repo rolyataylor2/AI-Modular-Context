@@ -60,8 +60,8 @@ app.post('/Chat/Completions', (req, res) => {
   }
 
   // Collect Data
+  const API_URL = 'https://api.anthropic.com/v1/messages'
   const data = {
-    api_url: 'https://api.anthropic.com/v1/messages',
     system: req.body.system,
     messages: req.body.messages,
     model: req.body.model,
@@ -96,7 +96,7 @@ app.post('/Chat/Completions', (req, res) => {
   //
   // API Call
   //
-  fetch(data.api_url, {
+  fetch(API_URL, {
     method: 'POST',
     headers: {
       'x-api-key': API_KEY,

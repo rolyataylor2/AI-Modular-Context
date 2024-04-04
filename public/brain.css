@@ -18,13 +18,13 @@
 /* Grid layout for the brain */
 #Brain > #BrainGrid {
     display:grid;
-    grid-template-columns:1fr;
-    grid-template-rows:1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr;
     gap:10px;
     background: url(/img/brain.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    margin-top:16px;
 }
 
 
